@@ -1,4 +1,6 @@
-name: CI
+ name: CI Pipeline
+# trigger ci
+
 
 on:
   push:
