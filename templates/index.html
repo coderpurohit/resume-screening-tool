@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Resume Screening Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Resume Screening Tool</h1>
+      <p class="subtitle">Paste a resume and a job description to see how well they match.</p>
+
+      {% if error %}
+      <div class="alert alert-error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" class="form">
+        <div class="field">
+          <label for="resume">Resume Text</label>
+          <textarea id="resume" name="resume" rows="10" placeholder="Paste resume text here..." required>{{ request.form.resume }}</textarea>
+        </div>
+
+        <div class="field">
+          <label for="job">Job Description</label>
+          <textarea id="job" name="job" rows="10" placeholder="Paste job description here..." required>{{ request.form.job }}</textarea>
+        </div>
+
+        <button type="submit">Screen Resume</button>
+      </form>
+
+      {% if result %}
+      <div class="result">
+        <h2>Result</h2>
+        <p><strong>Match Score:</strong> {{ result.score }}%</p>
+        <p><strong>Fit Category:</strong> {{ result.fit }}</p>
+
+        <div class="lists">
+          <div>
+            <h3>Matched Keywords</h3>
+            {% if result.matched %}
+            <ul>
+              {% for word in result.matched %}
+              <li>{{ word }}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p class="empty">No matched keywords.</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <h3>Missing Keywords</h3>
+            {% if result.missing %}
+            <ul>
+              {% for word in result.missing %}
+              <li>{{ word }}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p class="empty">No missing keywords.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
